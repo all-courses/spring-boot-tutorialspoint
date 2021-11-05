@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.tp.tutorialspoint.exception.ProductNotfoundException;
 import com.tp.tutorialspoint.model.Product;
 
 @RestController
@@ -44,6 +45,9 @@ public class ProductController {
 
 	@RequestMapping(value = "/{id}", method = RequestMethod.PUT)
 	public ResponseEntity<Object> updateProduct(@PathVariable("id") int id, @RequestBody Product product) {
+		if(!productRepo.containsKey(id))
+			throw new ProductNotfoundException();
+		
 		productRepo.remove(id);
 		product.setId(id);
 		productRepo.put(id, product);
@@ -52,6 +56,9 @@ public class ProductController {
 
 	@RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
 	public ResponseEntity<Object> delete(@PathVariable("id") int id) {
+		if(!productRepo.containsKey(id))
+			throw new ProductNotfoundException();
+		
 		productRepo.remove(id);
 		return new ResponseEntity<>("Product is deleted successsfully", HttpStatus.OK);
 	}
