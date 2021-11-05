@@ -21,7 +21,7 @@
 
 	<appender name="FILE" class="ch.qos.logback.core.FileAppender">
 		
-		<File>./AppLogs/mylog.log</File>
+		<File>./TutorialsPoint/AppLogs/mylog.log</File>
 		
 		<encoder>
 			<pattern>[%d{yyyy-MM-dd'T'HH:mm:ss.sss'Z'}] [%C] [%t] [%L] [%-5p]%m%n
