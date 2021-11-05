@@ -1,4 +1,4 @@
-package com.tp.tutorialspoint.controller;
+package com.tp.tutorialspoint.restcontroller;
 
 import java.io.File;
 import java.io.FileInputStream;
