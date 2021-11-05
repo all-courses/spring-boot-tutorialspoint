@@ -75,8 +75,14 @@ public class ProductController {
 
 	@RequestMapping(value = "/upload/{id}", method = RequestMethod.POST, consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
 	public String fileUpload(@PathVariable("id") int id, @RequestParam("file") MultipartFile file) throws IOException {
-		File convertFile = new File("./TutorialsPoint/Product_Images/"
-				+ String.format("Product_%d.%s", id, FilenameUtils.getExtension(file.getOriginalFilename())));
+		String UPLOAD_DIR_PATH = "./TutorialsPoint/Product_Images";
+		File directory = new File(UPLOAD_DIR_PATH);
+		if (! directory.exists()){
+	        directory.mkdirs();
+	    }
+		
+		File convertFile = new File(UPLOAD_DIR_PATH
+				+ String.format("/Product_%d.%s", id, FilenameUtils.getExtension(file.getOriginalFilename())));
 		convertFile.createNewFile();
 		FileOutputStream fout = new FileOutputStream(convertFile);
 		fout.write(file.getBytes());
