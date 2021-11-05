@@ -7,6 +7,7 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.InputStreamResource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -21,55 +22,51 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import org.apache.commons.io.FilenameUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
-import com.tp.tutorialspoint.exception.ProductNotfoundException;
+import com.tp.tutorialspoint.TutorialsPointApplication;
 import com.tp.tutorialspoint.model.Product;
+import com.tp.tutorialspoint.service.ProductService;
 
 @RestController
 @RequestMapping("/products")
 public class ProductController {
-	private static Map<Integer, Product> productRepo = new HashMap<>();
-	static {
-		Product honey = new Product(1, "Honey");
-		productRepo.put(honey.getId(), honey);
-
-		Product almond = new Product(2, "Almond");
-		productRepo.put(almond.getId(), almond);
-	}
+	private static final Logger logger = LoggerFactory.getLogger(ProductController.class);
+	
+	@Autowired
+   ProductService productService;
 
 	@RequestMapping
 	public ResponseEntity<Object> getProducts() {
-		return new ResponseEntity<>(productRepo.values(), HttpStatus.OK);
+		return new ResponseEntity<>(productService.getProducts(), HttpStatus.OK);
 	}
 
 	public ResponseEntity<Object> getProduct(
+			@RequestParam(value = "id", required = true) int pid,
 			@RequestParam(value = "name", required = false, defaultValue = "honey") String name) {
-		return null;
+		logger.info(String.format("Product Details: pid=%d and Name=%s",pid,name));
+		return new ResponseEntity<>(productService.getProductDetails(pid), HttpStatus.OK);
 	}
 
 	@RequestMapping(method = RequestMethod.POST)
 	public ResponseEntity<Object> createProduct(@RequestBody Product product) {
-		productRepo.put(product.getId(), product);
+		productService.createProduct(product);
+		
 		return new ResponseEntity<>("Product is created successfully", HttpStatus.CREATED);
 	}
 
 	@RequestMapping(value = "/{id}", method = RequestMethod.PUT)
 	public ResponseEntity<Object> updateProduct(@PathVariable("id") int id, @RequestBody Product product) {
-		if (!productRepo.containsKey(id))
-			throw new ProductNotfoundException();
-
-		productRepo.remove(id);
-		product.setId(id);
-		productRepo.put(id, product);
+		productService.updateProduct(id, product);
+		
 		return new ResponseEntity<>("Product is updated successsfully", HttpStatus.OK);
 	}
 
 	@RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
 	public ResponseEntity<Object> delete(@PathVariable("id") int id) {
-		if (!productRepo.containsKey(id))
-			throw new ProductNotfoundException();
-
-		productRepo.remove(id);
+		productService.deleteProduct(id);
+		
 		return new ResponseEntity<>("Product is deleted successsfully", HttpStatus.OK);
 	}
 
