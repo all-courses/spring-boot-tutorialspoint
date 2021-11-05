@@ -15,9 +15,12 @@ public class HomeController {
 	@Value("${developerBy}")
 	private String developerBy;
 	
+	@Value("${developYear:1996}")
+	private String developeYear;
+	
 	@RequestMapping(method = RequestMethod.GET, path = "/" )
 	@ResponseBody
 	public String welcomePage() {
-		return "Welcome to Spring Boot !!!</br> By "+developerBy+" @ "+appName;
+		return "Welcome to Spring Boot !!!</br> By "+developerBy+" @ "+appName+"-"+developeYear;
 	}
 }
