@@ -1,0 +1,17 @@
+>keytool -genkey -alias tutorialspoint -storetype PKCS12 -keyalg RSA -keysize 2048 -keystore tp_keystore.p12 -validity 3650
+Enter keystore password:
+Re-enter new password:
+What is your first and last name?
+  [Unknown]:  Vi
+What is the name of your organizational unit?
+  [Unknown]:  VJ-Dev
+What is the name of your organization?
+  [Unknown]:  VJ
+What is the name of your City or Locality?
+  [Unknown]:  IN-Pune
+What is the name of your State or Province?
+  [Unknown]:  MAH
+What is the two-letter country code for this unit?
+  [Unknown]:  IN
+Is CN=Vi, OU=VJ-Dev, O=VJ, L=IN-Pune, ST=MAH, C=IN correct?
+  [no]:  yes
